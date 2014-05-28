@@ -1,5 +1,4 @@
 #vars
-#MEMORY=2048
 $apt_get_update = <<EOF
 /usr/bin/wget https://apt.puppetlabs.com/puppetlabs-release-precise.deb
 /usr/bin/dpkg -i puppetlabs-release-precise.deb
@@ -20,11 +19,10 @@ Vagrant.configure("2") do |config|
       local.vm.box = cfg[:box]
       local.vm.box_url = cfg[:box_url]
       local.vm.network :private_network, ip: cfg[:ip]
-	local.vm.provider :virtualbox do |vb|
-        #   vb.customize ["modifyvm", :id, "--memory", MEMORY]
-	 vb.memory = 2048
-	 vb.cpus = 2
-        end
+    	local.vm.provider :virtualbox do |vb|
+	      vb.memory = 2048
+	      vb.cpus = 2
+      end
       local.vm.host_name = ENV['VAGRANT_HOSTNAME'] || name.to_s.downcase.gsub(/_/, '-').concat(".example42.com")
       local.vm.provision :shell, :inline => $apt_get_update
       local.vm.provision :puppet do |puppet|
